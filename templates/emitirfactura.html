@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Emitir factura</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+    </head>
+    <body>
+        <form class="form-fact" action="/Factura" method="POST">
+            <h5>Factura</h5>
+            <input class="controls" type="text" name="factura" id="factura" placeholder="Correlativo Factura">
+            <input class="controls" type="date" name="fecha" id="fecha" placeholder="Fecha">
+            <input class="controls" type="text" name="NIT" id="NIT" placeholder="NIT">
+            <input class="controls" type="text" name="direccion" id="direccion" placeholder="Dirección">
+            <input class="controls" type="text" name="concepto" id="concepto" placeholder="Producto/Servicio">
+            <input class="controls" type="number" name="cantidad" id="cantidad" placeholder="Cantidad">
+            <input class="controls" type="text" name="IVA" id="IVA" placeholder="IVA">
+            <input class="controls" type="text" name="total" id="total" placeholder="Total">
+            <button class="buttons" type="submit">Generar Factura</button>
+        </form>
+    </body>
+</html>

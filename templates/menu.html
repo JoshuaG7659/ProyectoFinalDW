@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Principal</title>
+    <script src="https://kit.fontawesome.com/f9f04e7c06.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container_menu">
+            <div class="menu">
+                <input type="checkbox" id="check__menu">
+                <label for="check__menu" id="#label__check">
+                    <i class="fa-solid fa-bars icon__menu"></i>
+                </label>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="selected"></a></li>
+                        <li><a href="#">Pagos</a>
+                            <ul>
+                                <li><a href="{{ url_for('regpago') }}">Registrar pagos</a></li>
+                                <li><a href="{{ url_for('anular') }}">Anular pagos</a></li>
+                                <li><a href="#">Moras</a></li>
+                            </ul>                        
+                        </li>
+                        <li><a href="#">Facturas</a>
+                            <ul>
+                                <li><a href="{{ url_for('emitirfac') }}">Generar factura</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Estado de cuenta</a>
+                            <ul>
+                                <li><a href="#">Ver estado de cuenta</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Clientes</a>
+                            <ul>
+                                <li><a href="{{ url_for('regcliente') }}">Registrar cliente</a></li>
+                                <li><a href="{{ url_for('bajacliente') }}">Eliminar cliente</a></li>
+                                <li><a href="{{ url_for('modificar') }}">Actualizar datos</a></li>
+                                <li><a href="{{ url_for('conscliente') }}">Consulta de cliente</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

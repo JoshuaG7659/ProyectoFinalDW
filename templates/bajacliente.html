@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Eliminar Cliente</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bajacliente.css') }}">
+    </head>
+    <body>
+        
+        <form class="form-bajacliente" action="/BajaCliente" method="POST">
+            <h5>Eliminar cliente</h5>
+            <input class="controls" type="text" name="id_cliente" id="id_cliente" placeholder="Ingrese el ID del cliente">
+            <input class="controls" type="text" name="razon" id="razon" placeholder="Razon de baja">
+            <button class="buttons" type="submit">Eliminar Cliente</button>
+        </form>
+    </body>
+</html>

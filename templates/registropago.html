@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Registro de Pagos</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/registropago.css') }}">
+    </head>
+    <body>
+        
+        <form class="form-regclie" action="/registrarcliente" method="POST">
+            <h5>Formulario Registro</h5>
+            <input class="controls" type="text" name="idcliente" id="idcliente" placeholder="ID Cliente">
+            <input class="controls" type="text" name="correlativo" id="correlativo" placeholder="No. Correlativo Factura">
+            <select>
+                <option disabled selected="">Seleccion metodo de pago</option>
+                <option>Efectivo</option>
+                <option>Deposito Bancario </option>
+                <option>Tarjeta de Crédito/Debito</option>
+            </select>
+            <input class="controls" type="date" name="fecha" id="fecha" placeholder="Fecha de pago">
+            <input class="controls" type="text" name="concepto" id="concepto" placeholder="Concepto del pago">
+            <button class="buttons" type="submit">Registrar pago</button>
+        </form>
+    </body>
+</html>

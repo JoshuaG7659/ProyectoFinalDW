@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Actualización de datos</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/modcliente.css') }}">
+    </head>
+    <body>
+        
+        <form class="form-modcliente" action="/registrarcliente" method="POST">
+            <h5>Formulario de Actualización</h5>
+            <input class="controls" type="text" name="nombres" id="nombres" placeholder="Nombres">
+            <input class="controls" type="text" name="apellidos" id="apellidos" placeholder="Apellidos">
+            <input class="controls" type="text" name="NIT" id="NIT" placeholder="NIT">
+            <input class="controls" type="text" name="telefono" id="telefono" placeholder="Tel/Cel">
+            <input class="controls" type="text" name="direccion" id="direccion" placeholder="Dirección">
+            <input class="controls" type="email" name="correo" id="correo" placeholder="E-mail">
+            <button class="buttons" type="submit">Actualizar datos</button>
+        </form>
+    </body>
+</html>

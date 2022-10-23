@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Anulación de pagos</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/anularpago.css') }}">
+    </head>
+    <body>
+        
+        <form class="form-anularpago" action="/BajaCliente" method="POST">
+            <h5>Anular pago</h5>
+            <input class="controls" type="text" name="correlativo" id="correlativo" placeholder="Ingrese el correlativo de pago">
+            <input class="controls" type="text" name="razon" id="razon" placeholder="Razon de la anulación">
+            <button class="buttons" type="submit">Anular Pago</button>
+        </form>
+    </body>
+</html>
