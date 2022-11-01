@@ -6,19 +6,52 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/registropago.css') }}">
     </head>
     <body>
-        
-        <form class="form-regclie" action="/registrarcliente" method="POST">
+        <form class="form-regclie" action="/Registropago" method="post">
             <h5>Formulario Registro</h5>
+            <input class="controls" type="text" name="idfactura" id="idfactura" placeholder="No. Factura">
             <input class="controls" type="text" name="idcliente" id="idcliente" placeholder="ID Cliente">
-            <input class="controls" type="text" name="correlativo" id="correlativo" placeholder="No. Correlativo Factura">
-            <select>
-                <option disabled selected="">Seleccion metodo de pago</option>
-                <option>Efectivo</option>
-                <option>Deposito Bancario </option>
-                <option>Tarjeta de Crédito/Debito</option>
+            <input class="controls" type="text" name="correlativo" id="correlativo" placeholder="No. Correlativo">
+            <input class="controls" type="date" name="fecha" id="fecha" placeholder="Fecha">
+            <select onchange="yesnoCheck()">
+                <option disabled selected="">Seleccione el metodo de pago</option>
+                <option id="yesCheck">Efectivo</option>
+                <option id="yesCheck2">Deposito Bancario</option>
+                <option id="yesCheck3">Tarjeta de Credito</option>
             </select>
-            <input class="controls" type="date" name="fecha" id="fecha" placeholder="Fecha de pago">
-            <input class="controls" type="text" name="concepto" id="concepto" placeholder="Concepto del pago">
+        <div id="ifYes" style="display: none;">
+            <input class="controls" type="text" name="efectivo" id="efectivo" placeholder="Q.">
+        </div>
+        <div id="ifYes2" style="display: none;">
+            <input class="controls" type="text" name="deposito" id="deposito" placeholder="No. Deposito">
+            <input class="controls" type="text" name="banco" id="banco" placeholder="Banco">
+        </div>
+        <div id="ifYes3" style="display: none;">
+            <input class="controls" type="text" name="transaccion" id="transaccion" placeholder="No. Transaccion">
+            <input class="controls" type="text" name="nom_tarj" id="nom_tarj" placeholder="Nombre Titular">
+            <input class="controls" type="text" name="auditoria" id="auditoria" placeholder="No. Auditoria">
+            <input class="controls" type="text" name="autorizacion" id="autorizacion" placeholder="No. Autorizacion">
+            <input class="controls" type="text" name="referencia" id="referencia" placeholder="No. Referencia">
+            <input class="controls" type="text" name="reftarj" id="reftarj" placeholder="Referencia">
+        </div>
+            <script type="text/javascript">
+                function yesnoCheck() {
+                    if (document.getElementById("yesCheck").selected) {
+                        document.getElementById("ifYes").style.display = "block";
+                    } else {
+                        document.getElementById("ifYes").style.display = "none";
+                    }
+                    if (document.getElementById("yesCheck2").selected) {
+                        document.getElementById("ifYes2").style.display = "block";
+                    } else {
+                        document.getElementById("ifYes2").style.display = "none";
+                    }
+                    if (document.getElementById("yesCheck3").selected) {
+                        document.getElementById("ifYes3").style.display = "block";
+                    } else {
+                        document.getElementById("ifYes3").style.display = "none";
+                    }
+                }
+            </script>
             <button class="buttons" type="submit">Registrar pago</button>
         </form>
     </body>

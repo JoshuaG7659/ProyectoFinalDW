@@ -31,9 +31,9 @@
                                 <li><a href="{{ url_for('emitirfac') }}">Generar factura</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Estado de cuenta</a>
+                        <li><a href="">Estado de cuenta</a>
                             <ul>
-                                <li><a href="#">Ver estado de cuenta</a></li>
+                                <li><a href="{{ url_for('estadocuenta') }}">Ver estado de cuenta</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Clientes</a>
@@ -41,7 +41,7 @@
                                 <li><a href="{{ url_for('regcliente') }}">Registrar cliente</a></li>
                                 <li><a href="{{ url_for('bajacliente') }}">Eliminar cliente</a></li>
                                 <li><a href="{{ url_for('modificar') }}">Actualizar datos</a></li>
-                                <li><a href="{{ url_for('conscliente') }}">Consulta de cliente</a></li>
+                                <li><a href="{{ url_for('formcliente') }}">Consulta de cliente</a></li>
                             </ul>
                         </li>
                     </ul>

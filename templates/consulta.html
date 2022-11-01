@@ -1,14 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
         <title>Consultar Clientes</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/consulta.css') }}">
     </head>
     <body>
-        <form class="form-consulta" action="/consultacliente" method="GET">
+        <form class="form-consulta" action="/consultacliente" method="post">
             <h5>Consultar</h5>
-            <input class="controls" type="text" name="Id" value="" placeholder="Id">
+            <input class="controls" type="text" name="nit" id="nit" placeholder="Ingrese NIT">
             <button class="buttons" type="submit">Consultar</button>
+        </form>
         </form>
     </body>
 </html>
