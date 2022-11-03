@@ -1,12 +1,11 @@
-import email
-from traceback import print_tb
+import os
 from urllib import response
 from wsgiref import headers
-from xml.dom import INVALID_MODIFICATION_ERR
 import requests
 from cgitb import html
 from http.client import NOT_FOUND
 import re
+import json
 from bson import json_util
 from flask import Flask, render_template, request,jsonify,Response,redirect,url_for,flash
 from flask_pymongo import PyMongo
@@ -53,17 +52,19 @@ def login():
                 }
         headers={'Content-Type':'application/json'}
         response =json_util.dumps(datos)
-        r=requests.request("POST",urlbase,headers=headers,data=response)
-        if username :
-            if password:
-                print('usuario logeado correctamente')
-                return render_template('/menu.html')
+        r=requests.request("GET",urlbase,headers=headers,data=response)
+        data=r.json()
+        for a in data:
+            if username ==a['nombre']:
+                if password==a['contrasena']:
+                    print('usuario logeado correctamente')
+                    return render_template('/menu.html')
+                else:
+                    print("Contraseña Invalida")
+                    return render_template('/login.html')
             else:
-                print("Contraseña Invalida")
-                return render_template('/login.html')
-        else:
-            print("Usuario incorrecto")
-            return render_template('/login.html')            
+                print("Usuario incorrecto")
+                return render_template('/login.html')            
     else:
         return render_template('/login.html')
 
@@ -73,16 +74,7 @@ def menu():
 
 @app.route('/consultacliente',methods=['POST','GET'])  
 def formcliente():
-    if request.method=='POST':
-        Nit=request.form['nit']
-        urlbase="http://localhost:5000/api/Cliente/Cliente,"
-        url=urlbase+Nit
-        r=requests.get(url,params=Nit)
-        data=r.json()
-        for a in data:
-            return (a['nombre']+" "+a['apellido'])
-    else:
-        return render_template('/consulta.html')       
+    return render_template('/consulta.html')     
 
 @app.route('/Registrocliente',methods=['POST','GET'])
 def regcliente():
@@ -109,7 +101,8 @@ def modificar():
 def regpago():
     if request.method=='POST':
         idfactura= request.form['idfactura']
-        idcliente= request.form['idcliente']
+        Nit= request.form['nit']
+        monto=request.form['monto']
         correlativo= request.form['correlativo']
         transaccion= request.form['transaccion']
         nomtarj= request.form['nom_tarj']
@@ -120,57 +113,121 @@ def regpago():
         reftarj= request.form['reftarj']
         deposito=request.form['deposito']
         banco=request.form['banco']
-        if correlativo and idfactura and transaccion and nomtarj and fecha and auditoria and autorizacion and referencia and reftarj and idcliente:
+        if correlativo and idfactura and transaccion and nomtarj and fecha and auditoria and autorizacion and referencia and reftarj and Nit:
             urlbase="http://localhost:5000/api/Cliente/pagos"
             datospago={
                 "correlativo": correlativo,
                 "Id_factura": idfactura,
+                "fecha": fecha,
+                "monto":monto,
                 "metodo": {
                     "No_transaccion": transaccion,
                     "Nombre_tarjeta": nomtarj,
-                    "Fecha": fecha,
                     "No_Auditoria": auditoria,
                     "No_Autorizacion": autorizacion,
                     "No_Referencia": referencia,
                     "Referencia_tarjeta": reftarj,
                     },
-                "Id_cliente": idcliente,
+                "NIT": Nit,
                     }
             headers={'Content-Type':'application/json'}
             response =json_util.dumps(datospago)
             r=requests.request("POST",urlbase,headers=headers,data=response)
             print(r.text)
+            url1="http://localhost:5000/api/Cliente/pagos,"+idfactura+",Id_factura"
+            url2="http://localhost:5000/api/Cliente/factura,"+idfactura+",Id_factura"
+            r1=requests.get(url1,params=idfactura)
+            r2=requests.get(url2,params=idfactura)
+            data1=r1.json()
+            data2=r2.json()
+                        #print(data1)
+            for a in data1:
+                for b in data2:
+                    lucas=({
+                        "total":(b['total']-a['monto'])
+                        })
+                    b['total']=lucas['total']
+                    c={"total":0}
+                    if c==lucas:
+                        print("Pago completado")
+                    else:
+                        url3="http://localhost:5000/api/Cliente/credito"
+                        status=True
+                        mora=0
+                        datos={
+                            "Id_factura": idfactura,
+                            "NIT": Nit,
+                            "fecha": fecha,
+                            "deuda": lucas['total'],
+                            "estado": status,
+                            "mora": mora
+                            }
+                        headers={'Content-Type':'application/json'}
+                        response =json_util.dumps(datos)
+                        r3=requests.request("POST",url3,headers=headers,data=response)
+                        print(r3.text)            
             return("Pago Registrado")
-        else:
-            if correlativo and idfactura and deposito and banco and idcliente:
-                urlbase="http://localhost:5000/api/Cliente/pagos"
-                datospago={
-                "correlativo": correlativo,
-                "Id_factura": idfactura,
-                "metodo": {
-                    "Deposito": deposito,
-                    "Banco": banco,
-                    "Fecha": fecha
-                    },
-                "Id_cliente": idcliente,
-                    }
-                headers={'Content-Type':'application/json'}
-                response =json_util.dumps(datospago)
-                r=requests.request("POST",urlbase,headers=headers,data=response)
-                print(r.text)
+        if correlativo and idfactura and deposito and banco and Nit and fecha and monto:
+            urlbase="http://localhost:5000/api/Cliente/pagos"
+            datospago={
+            "correlativo": correlativo,
+            "Id_factura": idfactura,
+            "fecha": fecha,
+            "monto":monto,
+            "metodo": {
+                "Deposito": deposito,
+                "Banco": banco
+                },
+                "NIT": Nit,
+                }
+            headers={'Content-Type':'application/json'}
+            response =json_util.dumps(datospago)
+            r=requests.request("POST",urlbase,headers=headers,data=response)
+            print(r.text)
+                
+            url1="http://localhost:5000/api/Cliente/pagos,"+idfactura+",Id_factura"
+            url2="http://localhost:5000/api/Cliente/factura,"+idfactura+",Id_factura"
+            r1=requests.get(url1,params=idfactura)
+            r2=requests.get(url2,params=idfactura)
+            data1=r1.json()
+            data2=r2.json()
+                    #print(data1)
+            for a in data1:
+                for b in data2:
+                    lucas=({
+                        "total":(b['total']-a['monto'])
+                        })
+                    b['total']=lucas['total']
+                    c={"total":0}
+                    if c==lucas:
+                        print("Pago completado")
+                    else:
+                        url3="http://localhost:5000/api/Cliente/credito"
+                        status=True
+                        mora=0
+                        datos={
+                            "Id_factura": idfactura,
+                            "NIT": Nit,
+                            "fecha": fecha,
+                            "deuda": lucas['total'],
+                            "estado": status,
+                            "mora": mora
+                            }
+                        headers={'Content-Type':'application/json'}
+                        response =json_util.dumps(datos)
+                        r3=requests.request("POST",url3,headers=headers,data=response)
+                        print(r3.text)              
                 return("Pago Registrado")
-            else:
-                print("No hay datos")
-                return("No hay datos")
+        else:
+            print("No hay datos")
+            return("No hay datos")
     else:
         return render_template('/registropago.html')
 
-@app.route('/Anularpago')
-def anular():
-    correlativo= request.form['correlativo']
-    razon= request.form['razon']
-    return render_template('/anularpago.html') 
 
+@app.route('/Anularpago',methods=['GET','POST'])
+def anular():
+        return render_template("/anularpago.html")
 @app.route('/Factura',methods=['POST','GET'])
 def emitirfac():
     if request.method=='POST':
@@ -181,7 +238,7 @@ def emitirfac():
         valoru= request.form['valoru']
         motivo= request.form['motivo']
         cantidad= request.form['cantidad']
-        total= request.form['total']
+        total= (int(cantidad)*int(valoru))
         observaciones= request.form['observaciones']
         if Id_factura and Nit and fecha and motivo and total and observaciones:
             urlbase="http://localhost:5000/api/Cliente/factura"
@@ -226,12 +283,87 @@ def estadocuenta():
     if request.method=='POST':
         Nit=request.form['nit']
         urlbase="http://localhost:5000/api/Cliente/Cliente,"
+        urlbase2="http://localhost:5000/api/Cliente/credito,"
+        urlbase3="http://localhost:5000/api/Cliente/factura,"
+        urlbase4="http://localhost:5000/api/Cliente/pagos,"
         url=urlbase+Nit
+        url2=urlbase2+Nit
+        url3=urlbase3+Nit
+        url4=urlbase4+Nit
         r=requests.get(url,params=Nit)
-        data2=r.json()
-        return(data2)
+        r2=requests.get(url2,params=Nit)
+        r3=requests.get(url3,params=Nit)
+        r4=requests.get(url4,params=Nit)
+        data=r.json()
+        data2=r2.json()
+        data3=r3.json()
+        data4=r4.json()
+        if Nit==[]:
+            return("No existe el NIT")
+        else:
+            datos={}
+            datos=[]      
+            for a,b in zip(data,data3):
+                datos.append(
+                        {
+                        "nombre":a['nombre'],
+                        "apellido":a['apellido'],
+                        "iD_Factura":b['Id_factura'],
+                        "fecha":b['fecha'],
+                        "saldo":b['total'],
+                        "abono":" ",
+                        "deuda":" ",
+                        "mora":" "
+                        })
+                dire="static"
+                filename="data.json"
+                fullpath= os.path.join(dire,filename)
+                with open(fullpath,'w') as file:
+                    json.dump(datos,file,indent=10)
+            
+            for a,b,c in zip(data,data4,data3):
+                        marcos=(
+                                {
+                                    "nombre":a['nombre'],
+                                    "apellido":a['apellido'],
+                                    "iD_Factura":b['Id_factura'],
+                                    "fecha":b['fecha'],
+                                    "abono":b['monto'],
+                                    "deuda":" ",
+                                    "saldo":(c['total']-b['monto']),
+                                    "mora":" "
+                                    })
+                        c['total']=marcos['saldo']
+                        datos.append(marcos)
+                        dire="static"
+                        filename="data.json"
+                        fullpath= os.path.join(dire,filename)
+                        with open(fullpath,'w') as file:
+                            json.dump(datos,file,indent=10)
+                                
+            for a,b,c in zip(data,data2,data3):
+                        marcos=(
+                                {
+                                "nombre":a['nombre'],
+                                "apellido":a['apellido'],
+                                "iD_Factura":b['Id_factura'],
+                                "fecha":b['fecha'],
+                                "deuda":c['total'],
+                                "abono":" ",
+                                "saldo":(c['total']),
+                                "mora":b['mora']
+                                })
+                        datos.append(marcos)
+                        dire="static"
+                        filename="data.json"
+                        fullpath= os.path.join(dire,filename)
+                        with open(fullpath,'w') as file:
+                            json.dump(datos,file,indent=10)
+
+                        
+        return render_template('/estadocuenta.html')       
     else:
-        return render_template('/estadocuenta.html')    
+        return render_template('/estadocuenta.html') 
 
 @app.errorhandler(404)
 def not_found(error=None):

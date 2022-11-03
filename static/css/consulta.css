@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-body{
-    background-image: url('/static/image/Fondo1.jpg');
-}
+
 
 .form-consulta{
     width: 400px;

@@ -1,39 +1,45 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/estadocuenta.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script type=text/javascript src="{{
+		url_for('static', filename='script.js')
+	  }}"></script>
+
+	  <script type=text/json src="{{
+		url_for('static', filename='data.json')
+	  }}"></script>
     <title>Estado cuenta</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/estadocuenta.css') }}">
 </head>
 <body>
-    <form class="form-consulta" action="/Estadocuenta" method="post">
+	<form class="form-consulta" action="/Estadocuenta" method="post">
         <h5>Consultar</h5>
         <input class="controls" type="text" name="nit" id="nit" placeholder="Ingrese NIT">
         <button class="buttons" type="submit">Consultar</button>
     </form>
-    <div class="container">
-        <table class="table">
-            <caption>Estado de Cuenta</caption>
-            <thead>
-                <tr>
-                    <th>ID_Cliente</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Factura No.</th>
-                    <th>Fecha</th>
-                    <th>Concepto</th>
-                    <th>Saldo</th>
-                    <th>Mora</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                
-               
-            </tbody>
-        </table>
-    </div>
-    
+	<table id="datos-tabla">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>No.Factura</th>
+				<th>Fecha</th>
+				<th>Deuda</th>
+				<th>Abono</th>
+                <th>Saldo</th>
+                <th>Mora</th>
+			</tr>
+		</thead>
+        <tbody id="data-output">
+			<!-- Prodcuts from gavascript file in here. -->
+		</tbody>
+	</table>
+
 </body>
+
 </html>

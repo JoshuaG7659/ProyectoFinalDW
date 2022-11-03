@@ -1,0 +1,32 @@
+[
+          {
+                    "nombre": "Joshua",
+                    "apellido": "Garc\u00eda",
+                    "iD_Factura": "250",
+                    "fecha": "2022-07-06T00:00:00.000Z",
+                    "saldo": 2500,
+                    "abono": " ",
+                    "deuda": " ",
+                    "mora": " "
+          },
+          {
+                    "nombre": "Joshua",
+                    "apellido": "Garc\u00eda",
+                    "iD_Factura": "250",
+                    "fecha": "2022-10-30T00:00:00.000Z",
+                    "abono": 300,
+                    "deuda": " ",
+                    "saldo": 2200,
+                    "mora": " "
+          },
+          {
+                    "nombre": "Joshua",
+                    "apellido": "Garc\u00eda",
+                    "iD_Factura": "250",
+                    "fecha": "2022-10-30T00:00:00.000Z",
+                    "deuda": 2200,
+                    "abono": " ",
+                    "saldo": 2200,
+                    "mora": 0
+          }
+]
